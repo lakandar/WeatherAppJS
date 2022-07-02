@@ -1,3 +1,16 @@
+//Data Storage Section
+const weatherData = {
+    city: "",
+    country: "",
+    API_KEY: "da06626c6f1be4e9ba970d4b2656c7b8",
+    async getWeather(){
+        const response= await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city},${this.country}&units=metric&appid=${this.API_KEY}`);
+        const data= await response.json();
+        console.log(data);
+    }
+
+}
+
 //UI section
 const UI = {
     //Selector
@@ -67,6 +80,18 @@ const UI = {
 
     },
 
+    //reset input
+    resetInputs(){
+        const {countryElm, cityElm} = this.localSelector();
+        countryElm.value="";
+        cityElm.value="";
+    },
+
+    //Handle Remote Data
+    handleRemoteData(){
+        weatherData.getWeather()
+    },
+
     //initialization - add data
     init(){
         const {formElm}=this.localSelector();
@@ -74,7 +99,14 @@ const UI = {
             e.preventDefault();
             //get input values
             const {country, city} = this.getInputValues();
-            console.log(country, city);
+            //setting or sending data to data storage
+            weatherData.city=city;
+            weatherData.country=country;
+            // console.log(country, city);
+            //reset input
+            this.resetInputs();
+
+            this.handleRemoteData();
 
             
         })
@@ -87,5 +119,3 @@ UI.init();
 //LocalStorage Section
 const storage = {}
 
-//Temp Data Storage Section
-const weatherData = {}
