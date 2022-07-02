@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Weather App</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"/>
+    
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1 class="text-center">Weather App</h1>
+
+        <p class="text-muted text-center">
+          Search weather of your city...
+        </p>
+        <div id="messageWrapper">
+        </div>
+
+        <div class="w-form">
+          <form id="form">
+            <div class="form-group mb-3">
+              <label for="country">Country</label>
+
+              <input
+                type="text"
+                class="form-control"
+                id="country"
+                placeholder="type your country to get your weather"/>
+              <small id="emailHelp" class="form-text text-muted">try your country first tow word for Ex:"BD"</small>
+            </div>
+            <div class="form-group mb-2">
+              <label for="city">City</label>
+              <input
+                type="text"
+                class="form-control"
+                id="city"
+                aria-describedby="emailHelp"
+                placeholder="type your city to get your weather" />
+                <small id="emailHelp" class="form-text text-muted">try your city like this:"Pabna"</small>
+            </div>
+
+            <button type="submit" class="btn btn-info mb-5" id="button">
+              Get Weather
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card">
+            <div class="card-header text-center" id="w-city">Pabna</div>
+
+            <ul class="list-group">
+              <li class="list-group-item text-center">
+                <span class="d-block">
+                  <img id="w-icon" >
+                </span>
+                <span id="w-feel"></span>
+              </li>
+
+              <li class="list-group-item" id="w-temp"></li>
+              <li class="list-group-item" id="w-pressure"></li>
+              <li class="list-group-item" id="w-humidity"></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div> 
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></scrip>
+    <script src="https://kit.fontawesome.com/f8261dd14c.js"></script>
+
+  </body>
+</html>
