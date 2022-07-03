@@ -4,10 +4,21 @@ const weatherData = {
     country: "",
     API_KEY: "da06626c6f1be4e9ba970d4b2656c7b8",
     async getWeather(){
-        const response= await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city},${this.country}&units=metric&appid=${this.API_KEY}`);
-        const data= await response.json();
-        console.log(data);
-    }
+        try{
+                const response= await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city},${this.country}&units=metric&appid=${this.API_KEY}`);
+            // const data= await response.json();
+            // name, main:{temp, pressure, humidity}, weather[0].description, weather[0].icon
+            const {name, main, weather}= await response.json();
+            // console.log(await response.json());
+            return{
+                name,
+                main,
+                weather,
+            }
+        } catch(err){
+            UI.showMessage("Error in fetching data...");
+        }
+    },
 
 }
 
@@ -88,14 +99,40 @@ const UI = {
     },
 
     //Handle Remote Data
-    handleRemoteData(){
-        weatherData.getWeather()
+    async handleRemoteData(){
+        const data = await weatherData.getWeather();
+        return data;
+    },
+
+    getIcon(iconCode){
+        return `https://openweathermap.org/img/w/${iconCode}.png`
+    },
+
+    //Populate to UI
+    populateUI(data){
+        const {
+            cityInfoElm,
+            iconElm,
+            temperatureElm,
+            pressureElm,
+            feelElm,
+            humidityElm,
+        } = this.localSelector();
+        const {name, main: {temp, pressure, humidity}, weather} = data;
+        
+        // name, main:{temp, pressure, humidity}, weather[0].description, weather[0].icon
+        cityInfoElm.textContent=name;
+        temperatureElm.textContent=`Temperature: ${temp}°C`;
+        pressureElm.textContent=`Pressure: ${pressure}`;
+        humidityElm.textContent=`Humidity: ${humidity}`;
+        feelElm.textContent=weather[0].description;
+        iconElm.setAttribute('src', this.getIcon(weather[0].icon));
     },
 
     //initialization - add data
     init(){
         const {formElm}=this.localSelector();
-        formElm.addEventListener("submit", e=>{
+        formElm.addEventListener("submit", async (e)=>{
             e.preventDefault();
             //get input values
             const {country, city} = this.getInputValues();
@@ -106,8 +143,10 @@ const UI = {
             //reset input
             this.resetInputs();
 
-            this.handleRemoteData();
-
+            const data= await this.handleRemoteData();
+            //populate to UI
+            this.populateUI(data);
+            console.log(data)
             
         })
     }
