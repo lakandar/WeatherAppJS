@@ -1,3 +1,21 @@
+//LocalStorage Section
+const storage = {
+    city: "",
+    country: "",
+    saveItem(){
+        localStorage.setItem('BD-city', this.city);
+        localStorage.setItem('BD-country', this.country);
+    },
+    getItem(){
+        const city=localStorage.getItem('BD-city');
+        const country=localStorage.getItem('BD-country');
+        return{
+            city,
+            country,
+        }
+    },
+}
+
 //Data Storage Section
 const weatherData = {
     city: "",
@@ -139,15 +157,33 @@ const UI = {
             //setting or sending data to data storage
             weatherData.city=city;
             weatherData.country=country;
-            // console.log(country, city);
+            //setting or sending data to Local storage
+            storage.city=city;
+            storage.country=country;
+            //saving to storage
+            storage.saveItem();
             //reset input
             this.resetInputs();
-
+            //send data to API server
             const data= await this.handleRemoteData();
             //populate to UI
             this.populateUI(data);
-            console.log(data)
+            //console.log(data)
             
+        })
+
+        window.addEventListener('DOMContentLoaded', async()=>{
+            let {city, country} = storage.getItem();
+            if(!city || !country){
+                city="Naogaon";
+                country="BD";
+            }
+            weatherData.city=city;
+            weatherData.country=country;
+            const data= await this.handleRemoteData();
+            //populate to UI
+            this.populateUI(data);
+            //console.log(data)
         })
     }
 
@@ -155,6 +191,5 @@ const UI = {
 //function call
 UI.init();
 
-//LocalStorage Section
-const storage = {}
+
 
